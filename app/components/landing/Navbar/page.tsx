@@ -302,7 +302,7 @@ export default function Navbar() {
                   href="mailto:hello@luminatesystems.com"
                   className="block text-sm text-gray-700 hover:text-black transition-colors"
                 >
-                  hello@luminatesystems.com
+                  contact@luminatesystems.com
                 </a>
               </motion.div>
             </motion.div>
