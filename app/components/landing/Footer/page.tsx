@@ -57,7 +57,7 @@ export default function Footer() {
                 className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors text-sm"
               >
                 <Mail className="w-4 h-4" />
-                hello@luminatesystems.com
+                contact@luminatesystems.com
               </a>
               <a
                 href="tel:+13312436122"

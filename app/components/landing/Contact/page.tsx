@@ -100,7 +100,7 @@ export default function Contact() {
                 <div>
                   <p className="text-xs uppercase tracking-widest text-gray-400 mb-2">Email</p>
                   <a href="mailto:hello@luminatesystems.com" className="text-black text-lg hover:text-gray-600 transition-colors">
-                    hello@luminatesystems.com
+                    contact@luminatesystems.com
                   </a>
                 </div>
               </div>

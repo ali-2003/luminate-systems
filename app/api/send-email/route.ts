@@ -1,7 +1,7 @@
-import { Resend } from 'resend';
+import sgMail from '@sendgrid/mail';
 import { NextRequest, NextResponse } from 'next/server';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+sgMail.setApiKey(process.env.SENDGRID_API_KEY || '');
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,75 +14,70 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Send email to your inbox
-    await resend.emails.send({
-      from: 'Luminate Systems <onboarding@resend.dev>',
-      to: process.env.CONTACT_EMAIL || 'hello@luminatesystems.com',
+    // Email 1: Send to YOU (Admin)
+    await sgMail.send({
+      to: 'founder@luminatesystems.com',
+      from: 'founder@luminatesystems.com',
       subject: `New Contact Form Submission from ${name}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #000; margin-bottom: 20px;">New Contact Form Submission</h2>
-          
-          <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <p style="margin: 0 0 15px 0;">
-              <strong style="color: #000;">Name:</strong><br>
-              <span style="color: #666;">${name}</span>
-            </p>
-            
-            <p style="margin: 0 0 15px 0;">
-              <strong style="color: #000;">Email:</strong><br>
-              <a href="mailto:${email}" style="color: #0066cc; text-decoration: none;">${email}</a>
-            </p>
-            
-            ${phone ? `
-            <p style="margin: 0 0 15px 0;">
-              <strong style="color: #000;">Phone:</strong><br>
-              <a href="tel:${phone}" style="color: #0066cc; text-decoration: none;">${phone}</a>
-            </p>
-            ` : ''}
-            
-            <p style="margin: 0;">
-              <strong style="color: #000;">Message:</strong><br>
-              <span style="color: #666; white-space: pre-wrap;">${message}</span>
-            </p>
+          <div style="background-color: #000; color: #fff; padding: 30px; text-align: center;">
+            <h1>Luminate Systems</h1>
+            <p>New Contact Form Submission</p>
           </div>
           
-          <div style="border-top: 1px solid #e5e7eb; padding-top: 20px; font-size: 12px; color: #999;">
-            <p>This email was sent from your Luminate Systems contact form.</p>
+          <div style="padding: 30px;">
+            <h2>New Inquiry</h2>
+            
+            <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <p style="margin: 0 0 15px 0;">
+                <strong style="color: #000;">Name:</strong><br>
+                <span style="color: #666;">${name}</span>
+              </p>
+              
+              <p style="margin: 0 0 15px 0;">
+                <strong style="color: #000;">Email:</strong><br>
+                <a href="mailto:${email}" style="color: #0066cc;">${email}</a>
+              </p>
+              
+              ${phone ? `
+              <p style="margin: 0 0 15px 0;">
+                <strong style="color: #000;">Phone:</strong><br>
+                <a href="tel:${phone}" style="color: #0066cc;">${phone}</a>
+              </p>
+              ` : ''}
+              
+              <p style="margin: 0;">
+                <strong style="color: #000;">Message:</strong><br>
+                <span style="color: #666; white-space: pre-wrap;">${message}</span>
+              </p>
+            </div>
+          </div>
+          
+          <div style="background-color: #f3f4f6; padding: 20px; text-align: center; font-size: 12px; color: #999; border-top: 1px solid #e5e7eb;">
+            <p>© 2025 Luminate Systems</p>
           </div>
         </div>
       `,
     });
 
-    // Send confirmation email to the user
-    await resend.emails.send({
-      from: 'Luminate Systems <onboarding@resend.dev>',
+    // Email 2: Confirmation to USER
+    await sgMail.send({
       to: email,
-      subject: 'We received your message',
+      from: 'contact@luminatesystems.com',
+      subject: 'We received your message - Luminate Systems',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-          <h2 style="color: #000; margin-bottom: 20px;">Thank You, ${name}!</h2>
-          
-          <p style="color: #666; font-size: 16px; line-height: 1.6; margin-bottom: 20px;">
-            We've received your message and appreciate you reaching out to Luminate Systems. Our team will review your inquiry and get back to you within 24 hours.
-          </p>
-          
-          <div style="background-color: #f3f4f6; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <p style="color: #666; margin: 0;">
-              <strong style="color: #000;">Your message:</strong><br>
-              ${message}
-            </p>
+          <div style="background-color: #000; color: #fff; padding: 30px; text-align: center;">
+            <h1>Luminate Systems</h1>
           </div>
-          
-          <p style="color: #666; font-size: 14px; margin-bottom: 30px;">
-            In the meantime, if you have any urgent questions, feel free to call us at <a href="tel:+13312436122" style="color: #0066cc; text-decoration: none;">+1 (331) 243-6122</a>.
-          </p>
-          
-          <div style="border-top: 1px solid #e5e7eb; padding-top: 20px;">
-            <p style="color: #999; font-size: 12px; margin: 0;">
-              Best regards,<br>
-              The Luminate Systems Team
-            </p>
+          <div style="padding: 30px;">
+            <h2>Thank You, ${name}!</h2>
+            <p>We've received your message and appreciate you reaching out. Our team will review your inquiry and get back to you within 24 hours.</p>
+            <p>In the meantime, feel free to call us at <a href="tel:+13312436122" style="color: #0066cc;">+1 (331) 243-6122</a></p>
+          </div>
+          <div style="background-color: #f3f4f6; padding: 20px; text-align: center; font-size: 12px; color: #999;">
+            <p>© 2025 Luminate Systems</p>
           </div>
         </div>
       `,
@@ -92,8 +87,8 @@ export async function POST(request: NextRequest) {
       { message: 'Email sent successfully' },
       { status: 200 }
     );
-  } catch (error) {
-    console.error('Error sending email:', error);
+  } catch (error: any) {
+    console.error('Error:', error.message);
     return NextResponse.json(
       { error: 'Failed to send email' },
       { status: 500 }
