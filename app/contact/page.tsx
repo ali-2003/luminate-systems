@@ -1,0 +1,8 @@
+import type { Metadata } from "next";
+import { ArrowUpRight } from "@/components/icons";
+import { ContactForm } from "@/components/contact-form";
+import { SITE_EMAIL, SITE_PHONE } from "@/lib/site";
+
+export const metadata: Metadata = { title: "Discuss Your Problem — Contact Our Software Studio", description: "Tell us the business problem you want to solve. Luminate Systems devises custom software, automations, integrations, and nonprofit technology solutions.", alternates: { canonical: "/contact" } };
+
+export default function ContactPage() { return <><section className="contact-page"><div className="container-wide"><div className="contact-page-top"><div className="tiny-label page-kicker"><span className="status-dot"/> NEW CONVERSATIONS WELCOME</div><h1>Tell us the<br /><em>problem to solve.</em></h1><p>Something taking too much time? Systems that do not talk to each other? A product idea you cannot find off the shelf? Describe the challenge. We will discuss a practical technology solution.</p></div><div className="contact-page-grid"><div className="contact-info"><div className="contact-info-intro"><span className="tiny-label">DIRECT LINE</span><h2>You bring the challenge. We bring the engineering.</h2></div><div className="contact-info-block"><span className="tiny-label">EMAIL US</span><a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}<ArrowUpRight size={24}/></a></div><div className="contact-info-block"><span className="tiny-label">OR GIVE US A CALL</span><a href="tel:+13312436122">{SITE_PHONE}<ArrowUpRight size={24}/></a></div><div className="contact-info-note"><span className="status-dot"/><span>INDEPENDENT STUDIO<br/>CHICAGO ROOTS / WORLDWIDE REACH</span></div></div><ContactForm /></div></div></section></>; }
